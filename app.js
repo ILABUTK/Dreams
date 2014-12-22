@@ -10,6 +10,9 @@ $(document).ready(function() {
         xpUpdateRecord();
     });
 
+	$('#searchitem').click(function (e){
+		searchRecord();
+	});
 
     function checkEnterKey(e, action) {
         if (e.keyCode == 13) {
@@ -60,10 +63,11 @@ function runApp() {
 
 function getRecords() {
 
+    
     window.df.apis.SQL.getRecords({"table_name":"sc_ilab_sql.iLabInventory"}, function (response) {
         buildItemList(response);
     }, crudError
-    );
+    );	
 }
 
 function createRecord() {
@@ -119,6 +123,21 @@ function deleteRecord(id) {
         getRecords();
     }, crudError
     );
+}
+
+//xp search
+function searchRecord() {
+
+	//if (window.console) console.log("called here");
+	
+	var item = $("#searchItemname").val();
+	
+	if (window.console) console.log("keyword=" + item);
+	
+	window.df.apis.SQL.getRecordsByFilter({"table_name":"sc_ilab_sql.iLabInventory", "filter":"Description like '%" + item +"%'"}, function (response) {
+        buildItemList(response);
+    }, crudError
+    );	
 }
 
 // ui
